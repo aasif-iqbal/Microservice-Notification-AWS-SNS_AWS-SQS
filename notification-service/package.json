@@ -1,8 +1,8 @@
 {
-  "name": "microservice-notification",
+  "name": "notification-service",
   "version": "0.1.0",
   "bin": {
-    "microservice-notification": "bin/microservice-notification.js"
+    "notification-service": "bin/notification-service.js"
   },
   "scripts": {
     "build": "tsc",
