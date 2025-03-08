@@ -2,6 +2,20 @@
 import * as cdk from 'aws-cdk-lib';
 import { NotificationServiceStack } from '../lib/notification-service-stack';
 
+/*
+// Explicitly Define Account & Region in CDK Code
+// Fetch AWS account details
+const env = { 
+  account: process.env.CDK_DEFAULT_ACCOUNT || '123456789012', 
+  region: process.env.CDK_DEFAULT_REGION || 'us-east-1' // Change region if needed
+};
+
+const app = new cdk.App();
+new NotificationServiceStack(app, 'NotificationServiceStack', { env });
+
+app.synth();
+*/
+
 const app = new cdk.App();
 new NotificationServiceStack(app, 'NotificationServiceStack', {
   /* If you don't specify 'env', this stack will be environment-agnostic.

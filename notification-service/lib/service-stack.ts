@@ -1,4 +1,4 @@
-import "reflect-metadata";
+import "reflect-metadata"; // for class-transformer
 import { Duration } from "aws-cdk-lib";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
 import {
