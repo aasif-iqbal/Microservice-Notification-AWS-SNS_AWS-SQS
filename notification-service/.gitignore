@@ -7,6 +7,3 @@ node_modules
 .cdk.staging
 cdk.out
 
-# For Mac only
-./.DS_Store
-.DS_Store

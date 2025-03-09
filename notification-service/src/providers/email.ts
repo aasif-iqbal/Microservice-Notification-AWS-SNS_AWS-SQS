@@ -1,5 +1,51 @@
 import sendgrid from '@sendgrid/mail';
+import * as AWS from 'aws-sdk';
 
+export const SendEmailUsingSES = async (
+  to: string,
+  message: string
+) => {
+  var params = {
+    Destination: {
+      // Required
+      CcAddresses: ["johndeo8789@gmail.com"],
+      ToAddresses: [to],
+    },
+    Message: {
+      Body: {
+        Body:{
+          Html:{
+            Charset: 'UTF-8',
+            Data: message
+          }
+        },
+        Text: {
+          Charset: 'UTF-8',
+          Data: message,
+        },
+      },
+      Subject: {
+        Charset: 'UTF-8',
+        Data: 'Order Confirmation - Test',
+      },
+    },
+    Source:"johndeo8789@gmail.com", // Replace with your verified sender email
+    ReplyToAddresses: ["johndeo8789@gmail.com"], // Replace with your verified sender email
+  };
+
+  const ses = new AWS.SES({ apiVersion: '2010-12-01' });
+
+  try {
+    const response = await ses.sendEmail(params).promise();
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
+
+/*
 const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY || '';
 sendgrid.setApiKey(SENDGRID_API_KEY);
 
@@ -40,3 +86,4 @@ export const SendEmail = async (template: EmailTemplate) => {
 }
 
 // Generate Template from Sendgrid Dashboard(https://sendgrid.com/dynamic-templates) and Copy Template ID
+*/ 

@@ -5,6 +5,7 @@ import { Queue } from 'aws-cdk-lib/aws-sqs';
 import { Construct } from 'constructs';
 import { ServiceStack } from './service-stack';
 import { SqsEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
+import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 
 export class NotificationServiceStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -27,7 +28,20 @@ export class NotificationServiceStack extends cdk.Stack {
     this.addSubscription(topic, otpQueue, ['customer_otp']);
 
 
-    const {emailHandler, otpHandler} = new ServiceStack(this, 'notification_service', {});
+    const {emailHandler, otpHandler} = new ServiceStack(
+      this, 
+      'notification_service', 
+      {}
+    );
+    
+    //email handler - aws ses
+    emailHandler.addToRolePolicy(
+      new PolicyStatement({
+        actions:["ses:SendEmail","ses:SendRawEmail"],
+        resources:["*"],
+        effect:Effect.ALLOW
+      })
+    )
     
     // email handler
     emailHandler.addEventSource(new SqsEventSource(emailQueue));
@@ -40,8 +54,6 @@ export class NotificationServiceStack extends cdk.Stack {
       value: topic.topicArn,
       exportName: 'NotificationTopic'
     });
-
-
   }
   addSubscription(topic: Topic, queue: Queue, allowedList: string[]) {
     topic.addSubscription(new SqsSubscription(queue, {

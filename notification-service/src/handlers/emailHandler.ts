@@ -2,7 +2,8 @@ import { SQSEvent } from "aws-lambda";
 import { plainToClass } from "class-transformer";
 import { EmailInput } from "../dtos/email.dto";
 import { AppValidationError } from "../utility/errors";
-import { ORDER_CONFIRMATION, SendEmail } from "../providers/email";
+// import { ORDER_CONFIRMATION, SendEmail } from "../providers/email";
+import { SendEmailUsingSES } from "../providers/email";
 
 export const CustomerEmailhandler = async (event: SQSEvent) => {
   const response:Record<string,unknown>[] = [];
@@ -16,8 +17,12 @@ export const CustomerEmailhandler = async (event: SQSEvent) => {
 
     if (!errors) {
       const { to, name, order_number } = input;
-      const OrderTemplate = ORDER_CONFIRMATION(to, name, order_number);
-      SendEmail(OrderTemplate);
+      
+      const emailBody = `Hello ${name}, your order number is ${order_number}`;
+      await SendEmailUsingSES(to, emailBody);
+
+      //const OrderTemplate = ORDER_CONFIRMATION(to, name, order_number);
+      // SendEmail(OrderTemplate);
     }else{
       response.push({        
         error:JSON.stringify(errors),
