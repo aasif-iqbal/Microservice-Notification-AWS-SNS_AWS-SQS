@@ -16,7 +16,7 @@ export class NotificationServiceStack extends cdk.Stack {
       visibilityTimeout: cdk.Duration.seconds(180), //timeout of processing a single message
     });
 
-    // sms queue
+    // sms queue (This OTP is valid for 30 minutes, if we want real-time otp check, then we don't need this aws sqs queue. we just use sns to send the otp directly)
     const otpQueue = new Queue(this, 'otp_queue', {
       visibilityTimeout: cdk.Duration.seconds(180), 
     })
