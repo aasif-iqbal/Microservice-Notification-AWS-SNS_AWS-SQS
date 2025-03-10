@@ -11,7 +11,7 @@ export const SendVerificationCode = async (
 ) => {
   const response = await client.messages.create({
     body: `Your verification code is ${code} it will expire within 30 minutes.`,
-    from: "+18138963397",
+    from: "+91xxxxxxxxxx",
     to: toPhoneNumber.trim(),
   });
   console.log(response);
