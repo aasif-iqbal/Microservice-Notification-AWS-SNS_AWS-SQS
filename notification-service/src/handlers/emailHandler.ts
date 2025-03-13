@@ -18,7 +18,7 @@ export const CustomerEmailhandler = async (event: SQSEvent) => {
     if (!errors) {
       const { to, name, order_number } = input;
       
-      const emailBody = `Hello ${name}, your order number is ${order_number}`;
+      const emailBody = `Your order is delivered successfully`;
       await SendEmailUsingSES(to, emailBody);
 
       //const OrderTemplate = ORDER_CONFIRMATION(to, name, order_number);
